@@ -14,13 +14,15 @@
     private final KelvinTempSensor sensor; // Temperature sensor.
 
     private final long PERIOD = 1000; // 1 sec = 1000 ms.
+    private final Object UI; //UI for AWT, Swing, Text
 
     /*
      * When a WeatherStation object is created, it in turn creates the sensor
      * object it will use.
      */
-    public WeatherStation() {
+    public WeatherStation(Object ui) {
         sensor = new KelvinTempSensor();
+        ui = ui;
     }
 
     /*
@@ -46,6 +48,15 @@
             celsius = (reading + KTOC) / 100.0;
             kelvin = reading / 100.0;
 
+            if (ui instanceof AWTUI) {
+                AWTUI awtui = (AWTUI) ui;
+                awtui.celsiusField.setText(String.format("%6.2f", celsius));
+                awtui.kelvinField.setText(String.format("%6.2f", kelvin));
+            } else if(ui instanceof SwingUI){
+                SwingUI swingui = (SwingUI) ui,
+                swingui.setCelsiusJLabel(celsius);
+                swingui.setKelvinJLabel(kelvin);
+            }else
             /*
              * Print both Celsius and Kelvin readings.
              */
@@ -60,8 +71,21 @@
      * Start the Thread.
      */
     public static void main(String[] args) {
-        WeatherStation ws = new WeatherStation();
-        Thread thread = new Thread(ws);
-        thread.start();
+        if (args.length <1){
+            System.err.println(("Usage: java WeatherStation <AWT|Swing|Text>"));
+            System.exit(1);
+        }
+
+        String uiType = args[0];
+        Object ui = null;
+
+        switch ((uiType)) {
+            case value:
+                
+                break;
+        
+            default:
+                break;
+        }
     }
 }
