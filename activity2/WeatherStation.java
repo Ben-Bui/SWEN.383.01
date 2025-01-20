@@ -9,83 +9,81 @@
  * which runs the periodic sensing.
  */
 
- public class WeatherStation implements Runnable {
+public class WeatherStation implements Runnable {
 
     private final KelvinTempSensor sensor; // Temperature sensor.
-
     private final long PERIOD = 1000; // 1 sec = 1000 ms.
-    private final Object UI; //UI for AWT, Swing, Text
+    private final Object ui; // UI object (AWTUI, SwingUI, or null for Text)
 
     /*
-     * When a WeatherStation object is created, it in turn creates the sensor
-     * object it will use.
+     * Constructor accepts a UI object (AWTUI or SwingUI) or null for text UI.
      */
     public WeatherStation(Object ui) {
-        sensor = new KelvinTempSensor();
-        ui = ui;
+        this.sensor = new KelvinTempSensor();
+        this.ui = ui;
     }
 
-    /*
-     * The "run" method called by the enclosing Thread object when started.
-     * Repeatedly sleeps a second, acquires the current temperature from
-     * its sensor, and reports this as a formatted output string.
-     */
     @Override
     public void run() {
-        int reading;           // actual sensor reading.
-        double celsius;        // sensor reading transformed to Celsius
-        double kelvin;         // sensor reading in Kelvin
+        int reading;
+        double celsius;
+        double kelvin;
         final int KTOC = -27315; // Convert raw Kelvin reading to Celsius
 
         while (true) {
             try {
                 Thread.sleep(PERIOD);
-            } catch (Exception e) {
-                // Ignore exceptions
+            } catch (InterruptedException e) {
+                System.err.println("Thread interrupted: " + e.getMessage());
+                break;
             }
 
             reading = sensor.reading();
             celsius = (reading + KTOC) / 100.0;
             kelvin = reading / 100.0;
 
+            // Update UI based on the type of interface
             if (ui instanceof AWTUI) {
                 AWTUI awtui = (AWTUI) ui;
                 awtui.celsiusField.setText(String.format("%6.2f", celsius));
                 awtui.kelvinField.setText(String.format("%6.2f", kelvin));
-            } else if(ui instanceof SwingUI){
-                SwingUI swingui = (SwingUI) ui,
+            } else if (ui instanceof SwingUI) {
+                SwingUI swingui = (SwingUI) ui;
                 swingui.setCelsiusJLabel(celsius);
                 swingui.setKelvinJLabel(kelvin);
-            }else
-            /*
-             * Print both Celsius and Kelvin readings.
-             */
-            System.out.printf("Reading is %6.2f degrees C and %6.2f degrees K%n", celsius, kelvin);
+            } else {
+                // Default to text-based UI
+                System.out.printf("Reading is %6.2f degrees C and %6.2f degrees K%n", celsius, kelvin);
+            }
         }
     }
 
-    /*
-     * Initial main method.
-     * Create the WeatherStation (Runnable).
-     * Embed the WeatherStation in a Thread.
-     * Start the Thread.
-     */
     public static void main(String[] args) {
-        if (args.length <1){
-            System.err.println(("Usage: java WeatherStation <AWT|Swing|Text>"));
+        if (args.length < 1) {
+            System.err.println("Usage: java WeatherStation <AWT|Swing|Text>");
             System.exit(1);
         }
 
         String uiType = args[0];
         Object ui = null;
 
-        switch ((uiType)) {
-            case value:
-                
+        switch (uiType) {
+            case "AWT":
+                ui = new AWTUI();
                 break;
-        
+            case "Swing":
+                ui = new SwingUI();
+                break;
+            case "Text":
+                // No UI needed for text-based output
+                break;
             default:
-                break;
+                System.err.println("Invalid UI type. Use 'AWT', 'Swing', or 'Text'.");
+                System.exit(1);
         }
+
+        WeatherStation ws = new WeatherStation(ui);
+        Thread thread = new Thread(ws);
+        thread.start();
     }
 }
