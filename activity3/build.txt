@@ -1,0 +1,11 @@
+Step 1: Compile the Java files 
+Compile the Java files for the WeatherStation, SwingUI, WeatherStationApp, and TextUI, open a terminal or command prompt, go to folder where your jiles are stored
+
+Use the  command to compile all Java files:
+javac *.java
+
+Step 2: Run  Files
+Once all the Java files are compiled, they will be a copy with the same name but with .class files
+
+Then run the command
+java WeatherStationApp
