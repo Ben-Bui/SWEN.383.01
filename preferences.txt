@@ -1,0 +1,5 @@
+Prefer to work with: Don't Care
+Prefer not to work with : Don't Care
+Level of Java Proficiency: LOW
+Your current section/status: just regular student
+Comments:no comment
