@@ -1,0 +1,13 @@
+To run the program follow the direction:
+
+1. Open a terminal or command prompt, if you are using VScode, Terminal->new Terminal.
+
+2. Navigate to the directory where the all files are located.
+
+3. Run the  command like so:
+
+   - For the Swing-based user interface:
+     java -jar SwingUI2.jar
+
+   - For the Text-based user interface:
+     java -jar TextUI2.jar
