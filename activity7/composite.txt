@@ -1,0 +1,18 @@
+1. Component: File (Abstract class that can represent either a file or a folder.)
+Leaf: Text, Sound (These are individual files that don’t contain other objects, representing a simple file type.)
+Composite: Folder (This represents directories, which can contain other files or folders, acting as containers for Leaf and other Composite objects.)
+Justification: File serves as the base class, so it is the Component. The Text and Sound classes are types of files and are leaf nodes because they don’t contain other objects. Folder is a container that can hold other files or folders, fulfilling the Composite role.
+
+2.Drawing Editor (Rectangles, Ellipses, Groups):
+
+Component: Drawable (Represents an abstract interface for all drawable objects.)
+Leaf: Rectangle, Ellipse (These are individual drawable shapes, representing simple objects that don't contain other objects.)
+Composite: Group (A group can hold other Drawable objects, either simple shapes or other groups, making it a container.)
+Justification: Drawable is the abstract base class for all drawable objects, fulfilling the Component role. Rectangle and Ellipse are simple shapes that do not contain other objects, making them Leaves. Group is a collection of drawables and can contain both Leaves and other Composites, making it the Composite.
+
+3.Other Application Example (GUI Component Tree):
+
+Component: GUIComponent (An abstract class representing any visual component in the GUI.)
+Leaf: Button, TextField (Individual user interface components that don’t contain other components.)
+Composite: Panel (A container that holds other components, whether Button, TextField, or other Panel objects.)
+Justification: GUIComponent is the base class representing all UI elements, fulfilling the Component role. Button and TextField are individual elements that don’t contain other elements, making them Leaves. Panel acts as a container for other GUI elements, so it’s the Composite.
