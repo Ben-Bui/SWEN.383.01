@@ -1,0 +1,18 @@
+Participant WeatherStation
+Participant KelvinTempSensor
+Participant Barometer
+Participant SwingUI
+
+WeatherStation -> KelvinTempSensor: reading()
+KelvinTempSensor --> WeatherStation: return Kelvin temperature
+
+WeatherStation -> Barometer: pressure()
+Barometer --> WeatherStation: return pressure
+
+WeatherStation -> WeatherStation: Convert readings
+WeatherStation -> SwingUI: notifyObservers()
+SwingUI -> SwingUI: update()
+SwingUI -> SwingUI: setKelvinJLabel()
+SwingUI -> SwingUI: setCelsiusJLabel()
+SwingUI -> SwingUI: setPressureMillibarsJLabel()
+SwingUI -> SwingUI: setPressureInchesJLabel()
